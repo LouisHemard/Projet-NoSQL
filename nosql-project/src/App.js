@@ -1,6 +1,10 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
+import HomePage from "../src/Pages/HomePage";
+import Connexion from './Pages/ConnexionForm'
+import Inscription from './Pages/InscriptionForm'
+import './Pages/Form.css'
+
 
 
 const router = createBrowserRouter([
@@ -10,11 +14,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/Inscription',
-    element: <div>Page Inscription</div>
+    element: <Inscription/>
   },
   {
     path: '/Connexion',
-    element: <div>Page Connexion</div>
+    element: <Connexion/>
   },
 ]);
 
