@@ -6,6 +6,7 @@ import Inscription from './Pages/InscriptionForm'
 import './Pages/Form.css'
 
 
+
 const router = createBrowserRouter([
   {
     path: '/',
