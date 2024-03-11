@@ -8,20 +8,13 @@ const Inscription = () => {
       <h1>Inscription</h1>
       <form>
         <div className="object-form">
-          <label className="label-form" htmlFor="username">Nom d'utilisateur</label>
-          <input className="input-form" type="username" id="username" name="username" />
+          <input className="input-form" type="username" id="username" name="username" placeholder="Nom d'utilisateur"/>
         </div>
         <div className="object-form">
-          <label className="label-form" htmlFor="email">Email</label>
-          <input className="input-form" type="email" id="email" name="email" />
+          <input className="input-form" type="email" id="email" name="email"  placeholder="Email"/>
         </div>
         <div className="object-form">
-          <label className="label-form" htmlFor="password">Mot de passe</label>
-          <input className="input-form" type="password" id="password" name="password" />
-        </div>
-        <div className="object-form">
-          <label className="label-form" htmlFor="passwordConfirm">Confirmer le mot de passe</label>
-          <input className="input-form" type="password" id="passwordConfirm" name="passwordConfirm" />
+          <input className="input-form" type="password" id="password" name="password" placeholder="Mot de passe"/>
         </div>
         <button type="submit">S'inscrire</button>
       </form>

@@ -8,12 +8,10 @@ const Connexion = () => {
       <h1>Connexion</h1>
       <form>
         <div className="object-form">
-          <label className="label-form" htmlFor="email">Email</label>
-          <input className="input-form" type="email" id="email" name="email" />
+          <input className="input-form" type="email" id="email" name="email" placeholder="Email"/>
         </div>
         <div className="object-form">
-          <label className="label-form" htmlFor="password">Mot de passe</label>
-          <input className="input-form" type="password" id="password" name="password" />
+          <input className="input-form" type="password" id="password" name="password" placeholder="Mot de passe" />
         </div>
         <button type="submit">Se connecter</button>
       </form>

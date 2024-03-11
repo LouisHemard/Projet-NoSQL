@@ -10,7 +10,7 @@ import './Pages/Form.css'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage/>
+    element: <Inscription/>
   },
   {
     path: '/Inscription',
