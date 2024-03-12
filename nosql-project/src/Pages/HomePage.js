@@ -1,17 +1,19 @@
 import React from 'react';
-import './HomePage.css';
+import './Form.css';
 import {NavLink} from "react-router-dom";
 
 function HomePage() {
   return (
-  <div classname="HomePage">
-    <h2>Si vous avez déjà un compte</h2>
+  <div className="container">
+    <h1>WhyNote</h1>
+    <h2>Capturez l'instant, notez l'idée - Votre univers de notes en un clic!</h2>
+    <p>Si vous avez déjà un compte</p>
       <form>
         <NavLink to="/Connexion">
         <input type="submit" value="Se connecter" />
         </NavLink>
       </form>
-      <h2>Sinon</h2>
+      <p>Sinon</p>
       <form>
         <NavLink to="/Inscription">
           <input type="submit" value="S'inscrire" />
