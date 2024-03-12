@@ -1,9 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3003;
+
+// Utilise le middleware CORS pour autoriser les requêtes cross-origin
+app.use(cors());
 
 // Middleware pour parser le corps des requêtes en JSON
 app.use(bodyParser.json());
@@ -14,19 +18,25 @@ const client = new MongoClient(uri);
 const dbName = 'NoSql';
 
 // Endpoint pour afficher toutes les notes (potentiellement filtrées par utilisateur)
-app.get('/notes', async (req, res) => {
-    const {userId}  = req.body;
-    if (!userId) {
-        return res.status(400).json({ message: "UserId is required" }); // Vérifie que l'ID de l'utilisateur est fourni
+app.get('/notes/:userId', async (req, res) => {
+    // Convertis le paramètre userId en nombre s'il est stocké comme nombre dans MongoDB
+    const userId = parseInt(req.params.userId);
+
+    // Si la conversion échoue (par exemple, si req.params.userId n'est pas un nombre valide), cela renverra NaN
+    if (isNaN(userId)) {
+        return res.status(400).json({ message: "UserId must be a number" });
     }
+
     try {
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection('notes');
-        // Filtrer les notes par userId
-        const notes = await collection.find({ userId: userId }, { projection: { contenu: 0 } }).toArray();
+
+        // Utilise le bon type pour userId dans la requête
+        const notes = await collection.find({ userId: userId }).toArray(); // enlève la projection si tu veux tout récupérer
         res.status(200).json(notes);
     } catch (e) {
+        console.error(e); // Cela aidera au débogage en cas d'erreur
         res.status(500).json({ message: e.message });
     } finally {
         await client.close();
@@ -34,14 +44,15 @@ app.get('/notes', async (req, res) => {
 });
 
 
+
 // Endpoint pour afficher les détails d'une note spécifique
-app.get('/detailsNotes', async (req, res) => {
-    const {id}  = req.body;
+app.get('/detailsNotes/:idNotes', async (req, res) => {
+    const id = req.params.idNotes;
     try {
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection('notes');
-        const note = await collection.findOne({ _id: new ObjectId(id) });
+        const note = await collection.findOne({ _id: new ObjectId(id) }); // Utiliser new ObjectId(id) pour créer un nouvel ObjectId
         if (note) {
             res.status(200).json(note);
         } else {
@@ -76,8 +87,9 @@ app.post('/notes', async (req, res) => {
 // Endpoint pour modifier une note existante
 app.patch('/notes', async (req, res) => {
     const {id}  = req.body;
-    console.log(id);
+
     const { titre, date, contenu ,userId } = req.body; // Supposons que l'on peut modifier userId ici, bien que cela soit inhabituel
+    console.log(id,titre, date, contenu ,userId);
     try {
         await client.connect();
         const db = client.db(dbName);
@@ -123,9 +135,25 @@ app.delete('/notes/:id', async (req, res) => {
         await client.close();
     }
 });
+app.patch('/titre', async (req, res) => {
+    const { idNote, titre } = req.body;
 
-
-// Les autres endpoints restent inchangés puisqu'ils n'impliquent pas directement `userId` dans leurs opérations.
+    try {
+        await client.connect();
+        const db = client.db(dbName);
+        const collection = db.collection('notes');
+        const result = await collection.updateOne({ _id: new ObjectId(idNote) }, { $set: { titre: titre } });
+        if (result.modifiedCount === 0) {
+            res.status(404).json({ message: "Note non trouvée ou utilisateur incorrect" });
+        } else {
+            res.status(200).json({ modifiedCount: result.modifiedCount });
+        }
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    } finally {
+        await client.close();
+    }
+});
 
 // Démarrage du serveur
 app.listen(port, () => {

@@ -16,7 +16,7 @@ const Connexion = () => {
             console.log('Connexion réussie:');
             console.log(data)
             // Sauvegarde les infos de l'utilisateur dans localStorage sans le mot de passe
-           sessionStorage.setItem('user', JSON.stringify(data.user.id)); // Adapte cette ligne si nécessaire
+           sessionStorage.setItem('user', JSON.stringify(data.user)); // Adapte cette ligne si nécessaire
 
             navigate('/NotePage'); // Utilise navigate('/') pour rediriger vers la page d'accueil
         } catch (error) {
