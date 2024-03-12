@@ -1,9 +1,14 @@
-import * as React from 'react';
-import axios from 'axios'; // N'oublie pas d'installer axios avec npm ou yarn
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importe useNavigate pour la redirection
+import { registerUser } from '../data/user'; // Assure-toi que le chemin d'importation est correct
 
 const Inscription = () => {
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // Utilise useNavigate pour la redirection
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(''); // Réinitialise l'erreur
 
     const nom = event.target.nom.value;
     const prenom = event.target.prenom.value;
@@ -12,11 +17,11 @@ const Inscription = () => {
     const passwordConfirm = event.target.passwordConfirm.value;
 
     if (password !== passwordConfirm) {
-      alert('Les mots de passe ne correspondent pas.');
+      setError('Les mots de passe ne correspondent pas.');
       return;
     }
 
-    const registrationData = {
+    const userData = {
       nom,
       prenom,
       mail: email,
@@ -24,37 +29,38 @@ const Inscription = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/register', registrationData);
-      console.log('Inscription réussie:', response.data);
-      // Redirection ou autres traitements ici
+      await registerUser(userData);
+      navigate('/Connexion'); // Utilise navigate pour rediriger vers la page d'accueil après une inscription réussie
     } catch (error) {
-      console.error('Erreur lors de l\'inscription:', error);
+      setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+      console.error('Erreur lors de l\'inscription:', error.response ? error.response.data : error.message);
     }
   };
 
   return (
       <div className='container'>
         <h1>Inscription</h1>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="object-form">
-            <label className="label-form" htmlFor="nom">Nom</label>
-            <input className="input-form" type="text" id="nom" name="nom" required />
+            <label htmlFor="nom">Nom</label>
+            <input type="text" id="nom" name="nom" required />
           </div>
           <div className="object-form">
-            <label className="label-form" htmlFor="prenom">Prénom</label>
-            <input className="input-form" type="text" id="prenom" name="prenom" required />
+            <label htmlFor="prenom">Prénom</label>
+            <input type="text" id="prenom" name="prenom" required />
           </div>
           <div className="object-form">
-            <label className="label-form" htmlFor="email">Email</label>
-            <input className="input-form" type="email" id="email" name="email" required />
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" required />
           </div>
           <div className="object-form">
-            <label className="label-form" htmlFor="password">Mot de passe</label>
-            <input className="input-form" type="password" id="password" name="password" required />
+            <label htmlFor="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required />
           </div>
           <div className="object-form">
-            <label className="label-form" htmlFor="passwordConfirm">Confirmer le mot de passe</label>
-            <input className="input-form" type="password" id="passwordConfirm" name="passwordConfirm" required />
+            <label htmlFor="passwordConfirm">Confirmer le mot de passe</label>
+            <input type="password" id="passwordConfirm" name="passwordConfirm" required />
           </div>
           <button type="submit">S'inscrire</button>
         </form>

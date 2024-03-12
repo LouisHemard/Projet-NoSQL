@@ -6,6 +6,7 @@
     "express": "^4.18.3",
     "mariadb": "^3.2.3",
     "mongoose": "^8.2.0",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.9.2",
+    "react-router-dom": "^6.22.3"
   }
 }
