@@ -1,58 +1,42 @@
 import * as React from 'react';
-
+import { useNavigate } from 'react-router-dom'; // Importe useNavigate au lieu de useHistory
+import { loginUser } from '../data/user'
 const Connexion = () => {
-    // Gestionnaire de soumission du formulaire
-    const handleSubmit = async (event) => {
-        event.preventDefault(); // Empêche le rechargement de la page
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const navigate = useNavigate(); // Utilise useNavigate pour la navigation
 
-        // Récupère les valeurs des inputs
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setErrorMessage('');
+
         const email = event.target.email.value;
         const password = event.target.password.value;
-
-        // Prépare les données à envoyer
-        const loginData = {
-            mail: email,
-            password: password,
-        };
-
-        try {
-            // Appel API pour la connexion
-            const response = await fetch('http://localhost:3001/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Erreur de connexion');
-            }
-
-            const data = await response.json();
-            console.log('Connexion réussie:', data);
-
+    //console.log(email, password);
+        try {const data = await loginUser({ mail: email, password: password });
+            console.log('Connexion réussie:');
+            console.log(data)
             // Sauvegarde les infos de l'utilisateur dans localStorage sans le mot de passe
-            const { password: pwd, ...userData } = data; // Supprime `password` de `data` si présent
-            localStorage.setItem('user', JSON.stringify(userData));
+           sessionStorage.setItem('user', JSON.stringify(data.user.id)); // Adapte cette ligne si nécessaire
 
-            // Ici, tu peux rediriger l'utilisateur ou faire d'autres traitements post-connexion
+            navigate('/NotePage'); // Utilise navigate('/') pour rediriger vers la page d'accueil
         } catch (error) {
             console.error('Erreur lors de la connexion:', error);
+            setErrorMessage('Erreur lors de la connexion. Veuillez réessayer.');
         }
     };
 
     return (
         <div className='container'>
             <h1>Connexion</h1>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="object-form">
                     <label className="label-form" htmlFor="email">Email</label>
-                    <input className="input-form" type="email" id="email" name="email" />
+                    <input className="input-form" type="email" id="email" name="email" required />
                 </div>
                 <div className="object-form">
                     <label className="label-form" htmlFor="password">Mot de passe</label>
-                    <input className="input-form" type="password" id="password" name="password" />
+                    <input className="input-form" type="password" id="password" name="password" required />
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
