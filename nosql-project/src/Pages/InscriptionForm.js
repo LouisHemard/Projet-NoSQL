@@ -38,7 +38,7 @@ const Inscription = () => {
   };
 
   return (
-      <div className='container'>
+      <div className='container-left container-form'>
         <h1>Inscription</h1>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
