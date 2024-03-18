@@ -26,10 +26,11 @@ const Connexion = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='container-left container-form'>
             <h1>Connexion</h1>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
+                <div className="object-forms">
                 <div className="object-form">
                     <label className="label-form" htmlFor="email">Email</label>
                     <input className="input-form" type="email" id="email" name="email" required />
@@ -37,6 +38,7 @@ const Connexion = () => {
                 <div className="object-form">
                     <label className="label-form" htmlFor="password">Mot de passe</label>
                     <input className="input-form" type="password" id="password" name="password" required />
+                </div>
                 </div>
                 <button class="submit-form" type="submit">Se connecter</button>
             </form>

@@ -11,13 +11,73 @@ body {
   height: 100vh;
 }
 
-.container {
+.container-general{
+  display:flex;
+  flex-direction: row;
+}
+
+.container-left {
   backdrop-filter: blur(5px);
   background-color: rgba(255, 255, 255, 1);
-  border-radius: 32px;
+  border-radius: 32px 0 0 32px;
   box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5), inset 0px -8px 16px 0px rgba(120, 103, 223, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
   padding: 40px;
   width: 600px;
+}
+
+.container-right{
+  background: linear-gradient(61deg, rgba(122,106,221,1) 0%, rgba(96,74,239,1) 78%);
+  box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5);
+  border-radius: 0 32px 32px 0;
+  padding: 40px;
+  width: 35em;
+}
+
+.container-form{
+  border-radius: 32px !important;
+}
+
+@keyframes MoveUpDownImg {
+  0%, 100% {
+    bottom: 220px;
+    right: 420px;
+  }
+  50% {
+    bottom: 240px;
+  }
+}
+
+@keyframes MoveUpDownText {
+  0%, 100% {
+    bottom: 470px;
+    right: 620px;
+  }
+  50% {
+    bottom: 490px;
+  }
+}
+
+.container-right img{
+  animation: MoveUpDownImg 4s ease infinite;
+  position: absolute;
+  width: 300px;
+  height: auto;
+}
+
+.container-right p{
+  width: 120px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(11.3px);
+  -webkit-backdrop-filter: blur(11.3px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 600;
+  font-size: 22px;
+  animation: MoveUpDownText 4.3s ease infinite;
+  position: absolute;
 }
 
 h1, h2 {
@@ -88,6 +148,7 @@ form {
   display:flex;
   flex-direction: column;
   align-items: flex-start;
+  margin: 10px 0;
 }
 
 button {
@@ -122,19 +183,18 @@ button:hover {
   border: none;
   border-radius: 12px;
   background-color: #e7e2ff;
+  width: 40em;
 }
 
 .submit-form{
-  background: linear-gradient(61deg, rgba(122,106,221,1) 0%, rgba(96,74,239,1) 78%);
+  background: linear-gradient(61deg, rgba(122, 106, 221, 1) 0%, rgba(96, 74, 239, 1) 78%);
   border-radius: 15px;
+  font-weight: 600;
   backdrop-filter: blur(5px);
-  box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5), inset 0px -8px 16px 0px rgba(120, 103, 223, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  padding: 20px;
 }
 
-form{
-  margin: 20px;
-}
-
-.object-form{
-
+.object-forms{
+  margin: 30px 0;
 }
