@@ -62,7 +62,7 @@ const Inscription = () => {
             <label htmlFor="passwordConfirm">Confirmer le mot de passe</label>
             <input className="input-form" type="password" id="passwordConfirm" name="passwordConfirm" required />
           </div>
-          <button class="submit-form" type="submit">S'inscrire</button>
+          <button className="submit-form" type="submit">S'inscrire</button>
         </form>
       </div>
   );

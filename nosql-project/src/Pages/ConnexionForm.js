@@ -38,7 +38,7 @@ const Connexion = () => {
                     <label className="label-form" htmlFor="password">Mot de passe</label>
                     <input className="input-form" type="password" id="password" name="password" required />
                 </div>
-                <button class="submit-form" type="submit">Se connecter</button>
+                <button className="submit-form" type="submit">Se connecter</button>
             </form>
         </div>
     );
