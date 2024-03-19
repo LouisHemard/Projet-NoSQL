@@ -41,7 +41,6 @@ export async function fetchNoteDetails(id) {
 
 export async function createNote(noteData) {
     try {
-        console.log('ok');
         const response = await fetch('http://localhost:3003/notes',{
             method: 'POST',
             headers: {
@@ -49,8 +48,7 @@ export async function createNote(noteData) {
             },
             body: JSON.stringify(noteData),
         });
-        console.log('///////');
-        console.log(noteData);
+
         if (!response.ok) throw new Error('Erreur lors de la création de la note');
         return await response.json();
     } catch (error) {
@@ -75,14 +73,16 @@ export async function updateNote(id, noteData, userId) {
         throw error;
     }
 }
-export async function updateNoteTitle(idNote, titre){
+export async function updateNoteTitle(uneNotes, titre, index, userId){
     try {
+        //console.log(uneNotes);
+        const idNote = uneNotes.idNotes
         const response = await fetch(`${baseUrl}/titre`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({idNote, titre}),
+            body: JSON.stringify({uneNotes, titre,index, userId}),
         });
         if (!response.ok) throw new Error('Erreur lors de la mise à jour du Titre');
         return await response.json();
@@ -90,17 +90,18 @@ export async function updateNoteTitle(idNote, titre){
         console.error('Erreur lors de la mise à jour du Titre:', error);
         throw error;
     }
+
 }
 
 
-export async function deleteNote(id, userId) {
+export async function deleteNote(id, userId, index) {
     try {
         const response = await fetch(`${baseUrl}/notes/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId }),
+            body: JSON.stringify({ userId, index }),
         });
         if (!response.ok) throw new Error('Erreur lors de la suppression de la note');
         return await response.json();
