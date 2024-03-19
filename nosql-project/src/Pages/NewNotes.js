@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createNote } from '../data/notes'; // Assure-toi que le chemin vers notes.js est correct
+import './Form.css'
+import './NewEditNote.css'
 
 const NewNotes = () => {
     const navigate = useNavigate();
@@ -32,18 +34,18 @@ const NewNotes = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='container-left container-form'>
             <h1>Ajouter une nouvelle note</h1>
             <form onSubmit={handleSubmit}>
                 <div className='title'>
-                    <label htmlFor="title-notes">Titre</label>
-                    <input className="input-form" type="text" id="title-notes" name="title-notes" placeholder='Nouvelle Note' required />
+                    <h3 >Titre</h3>
+                    <input className="input-form" type="text" id="title-notes" name="title-notes" placeholder='Nouvelle note' required />
                 </div>
                 <div className='details'>
-                    <label htmlFor="details-notes">Contenu</label>
-                    <input className="input-form" type="text" id="details-notes" name="details-notes" placeholder='Rédiger une Note' required />
+                    <h3 >Contenu</h3>
+                    <textarea className="text-form"  id="details-notes" name="details-notes" placeholder='Rédiger une Note' required />
                 </div>
-                <button type="submit">Ajouter Note</button>
+                <button className="submit-form" type="submit-form">Ajouter Note</button>
             </form>
         </div>
     );

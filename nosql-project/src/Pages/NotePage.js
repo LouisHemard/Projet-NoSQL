@@ -57,7 +57,7 @@ const NotePage = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='container-left container-form'>
             <h1>Mes Notes</h1>
                 {notes.map((note, index) => (
                     <div key={note.idNotes}>

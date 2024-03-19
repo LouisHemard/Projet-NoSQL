@@ -1,0 +1,11 @@
+.text-form {
+    padding: 20px 30px;
+    border: none;
+    border-radius: 12px;
+    background-color: #e7e2ff;
+    width: 40em;
+    height: 175px;
+}
+.submit-form{
+    margin-top: 20px;
+}
