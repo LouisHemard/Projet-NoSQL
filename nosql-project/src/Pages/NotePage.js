@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+
 import { fetchNotes, deleteNote, updateNoteTitle } from '../data/notes'; // Assurez-vous d'importer correctement vos fonctions d'API
 import './Form.css';
 import './NotePage.css'
 import { MdDelete, MdEdit } from "react-icons/md";
 
-
 const NotePage = () => {
     const [notes, setNotes] = useState([]);
     const navigate = useNavigate();
-    const userId = JSON.parse(sessionStorage.getItem('user')).id; // Assurez-vous que l'ID utilisateur est stocké dans le sessionStorage
+    const userId = JSON.parse(sessionStorage.getItem('user')).id;
 
     useEffect(() => {
         const getNotes = async () => {
@@ -17,39 +17,41 @@ const NotePage = () => {
                 const fetchedNotes = await fetchNotes(userId);
                 setNotes(fetchedNotes);
             } catch (error) {
-                console.error(error);
+                console.error('Erreur lors de la récupération des notes:', error);
             }
         };
 
         getNotes();
     }, [userId]);
 
-    const handleDeleteNote = async (id) => {
+    const handleDeleteNote = async (idNotes, index) => {
         if (window.confirm('Êtes-vous sûr de vouloir supprimer cette note ?')) {
             try {
-                await deleteNote(id, userId);
-                setNotes(notes.filter(note => note._id !== id));
+                await deleteNote(idNotes, userId, index); // Assure-toi que deleteNote accepte userId si nécessaire
+                setNotes(notes.filter((_, noteIndex) => noteIndex !== index));
             } catch (error) {
-                console.error(error);
+                console.error('Erreur lors de la suppression de la note:', error);
             }
         }
     };
 
-    const handleViewDetails = (id) => {
-        navigate(`/ModifNote/${id}`); // Assurez-vous que cette route est configurée dans ton application
+    const handleViewDetails = (idNotes) => {
+        navigate(`/ModifNote/${idNotes}`);
     };
 
-    const handleEditTitle = async (id, index) => {
+    const handleEditTitle = async (uneNote, index) => {
+        //console.log(uneNote);
         const newTitle = prompt('Veuillez saisir le nouveau titre :');
         if (newTitle !== null) {
-            //console.log(id, newTitle)
             try {
-                await updateNoteTitle(id, newTitle);
+                console.log(uneNote);
+
+                await updateNoteTitle(uneNote, newTitle, index, userId); // Assure-toi que updateNoteTitle accepte userId si nécessaire
                 const updatedNotes = [...notes];
                 updatedNotes[index].titre = newTitle;
                 setNotes(updatedNotes);
             } catch (error) {
-                console.error(error);
+                console.error('Erreur lors de la mise à jour du titre:', error);
             }
         }
     };
@@ -58,14 +60,14 @@ const NotePage = () => {
         <div className='container'>
             <h1>Mes Notes</h1>
                 {notes.map((note, index) => (
-                    <div key={note._id}>
+                    <div key={note.idNotes}>
                         <div className='UneNote'>
                             <div className='NoteName'
-                                  onDoubleClick={() => handleEditTitle(note._id, index)}>{note.titre}</div>
+                                  onDoubleClick={() =>handleEditTitle(note, index)}>{note.titre}</div>
                             <div className='DateName'>{note.date}</div>
                             <div className='Buttons'>
-                                <MdEdit  size={20} className='Icon' onClick={() => handleViewDetails(note._id)}/>
-                                <MdDelete size={20} className='Icon' onClick={() => handleDeleteNote(note._id)}/>
+                                <MdEdit  size={20} className='Icon' onClick={() => handleViewDetails(note.idNotes, index)}/>
+                                <MdDelete size={20} className='Icon' onClick={() => handleDeleteNote(note.idNotes, index)}/>
                             </div>
                         </div>
                     </div>
