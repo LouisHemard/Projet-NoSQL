@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {useParams, useHistory, useNavigate} from "react-router-dom";
 import { fetchNoteDetails, updateNote } from '../data/notes'; // Assurez-vous d'importer correctement vos fonctions d'API
+import './Form.css'
+import './NotePage.css'
 
 const ModifNote = () => {
     const { idNotes } = useParams();
@@ -61,19 +63,21 @@ const ModifNote = () => {
     };
 
     return (
-        <div className='container'>
-            <h1>Modifier Note {idNotes}</h1>
-
-            <div className='title'>
-                <label htmlFor="title-notes">Titre</label>
-                <input type='text' className="input-form" id="title-notes" name="title-notes" value={noteDetails.titre} onChange={handleTitleChange} required />
-            </div>
-            <div className='details'>
-                <label htmlFor="details-notes">Contenu</label>
-                <input type='text' className="input-form" id="details-notes" name="details-notes" value={noteDetails.contenu} onChange={handleContentChange} required />
-            </div>
-            <button type="button" onClick={handleUpdateNote}>Terminé</button>
-
+        <div className='container-left container-form'>
+            <h1>Modifier Note</h1>
+            <form>
+                <div className='title'>
+                    <h3>Titre</h3>
+                    <input className="input-form" type="text" id="title-notes" name="title-notes"
+                           value={noteDetails.titre} onChange={handleTitleChange} required/>
+                </div>
+                <div className='details'>
+                    <h3>Contenu</h3>
+                    <textarea className="text-form" id="details-notes" name="details-notes" value={noteDetails.contenu}
+                              onChange={handleContentChange} required/>
+                </div>
+                <button className="submit-form" type="submit" onClick={handleUpdateNote}>Terminé</button>
+            </form>
         </div>
     );
 };

@@ -7,12 +7,14 @@
     margin-left: 5px;
     flex: auto;
     align-items: center;
+    width: 200px;
 }
 .DateName{
     font-size: 10px;
     display: flex;
     align-items: center;
     flex: auto;
+    width: 200px;
 }
 
 .NoteName:hover{
@@ -33,6 +35,7 @@
     justify-content: space-evenly;
     flex: auto;
     align-items: center;
+    width: 200px;
 }
 
 .BtnNewDec{
