@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { fetchNotes, deleteNote, updateNoteTitle } from '../data/notes';
+
+import { fetchNotes, deleteNote, updateNoteTitle } from '../data/notes'; // Assurez-vous d'importer correctement vos fonctions d'API
+import './Form.css';
+import './NotePage.css'
+import { MdDelete, MdEdit } from "react-icons/md";
 
 const NotePage = () => {
     const [notes, setNotes] = useState([]);
@@ -55,22 +59,27 @@ const NotePage = () => {
     return (
         <div className='container'>
             <h1>Mes Notes</h1>
-            <ul>
                 {notes.map((note, index) => (
-                    <li key={note.idNotes}>
-                        <span onDoubleClick={() => handleEditTitle(note, index)}>{index}. {note.titre}</span>
-                        <span>{note.date}</span>
-                        <button onClick={() => handleViewDetails(note.idNotes, index)}>Voir</button>
-                        <button onClick={() => handleDeleteNote(note.idNotes, index)}>Supprimer</button>
-                    </li>
+                    <div key={note.idNotes}>
+                        <div className='UneNote'>
+                            <div className='NoteName'
+                                  onDoubleClick={() =>handleEditTitle(note, index)}>{note.titre}</div>
+                            <div className='DateName'>{note.date}</div>
+                            <div className='Buttons'>
+                                <MdEdit  size={20} className='Icon' onClick={() => handleViewDetails(note.idNotes, index)}/>
+                                <MdDelete size={20} className='Icon' onClick={() => handleDeleteNote(note.idNotes, index)}/>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </ul>
-            <NavLink to="/NewNotes">
-                <button>Nouvelle Note</button>
-            </NavLink>
-            <NavLink to="/">
-                <button>Déconnexion</button>
-            </NavLink>
+            <div className="BtnNewDec">
+                <NavLink to="/NewNotes">
+                    <button className="submit-form">Nouvelle Note</button>
+                </NavLink>
+                <NavLink to="/">
+                    <button className="submit-form" >Déconnexion</button>
+                </NavLink>
+            </div>
         </div>
     );
 };

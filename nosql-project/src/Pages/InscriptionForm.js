@@ -38,31 +38,31 @@ const Inscription = () => {
   };
 
   return (
-      <div className='container'>
+      <div className='container-left container-form'>
         <h1>Inscription</h1>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="object-form">
             <label htmlFor="nom">Nom</label>
-            <input type="text" id="nom" name="nom" required />
+            <input className="input-form" type="text" id="nom" name="nom" required />
           </div>
           <div className="object-form">
             <label htmlFor="prenom">Prénom</label>
-            <input type="text" id="prenom" name="prenom" required />
+            <input className="input-form" type="text" id="prenom" name="prenom" required />
           </div>
           <div className="object-form">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" required />
+            <input className="input-form" type="email" id="email" name="email" required />
           </div>
           <div className="object-form">
             <label htmlFor="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required />
+            <input className="input-form" type="password" id="password" name="password" required />
           </div>
           <div className="object-form">
             <label htmlFor="passwordConfirm">Confirmer le mot de passe</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" required />
+            <input className="input-form" type="password" id="passwordConfirm" name="passwordConfirm" required />
           </div>
-          <button type="submit">S'inscrire</button>
+          <button class="submit-form" type="submit">S'inscrire</button>
         </form>
       </div>
   );

@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
+  font-family: "Poppins", sans-serif;
+  background-color: #e7e2ff;
   margin: 0;
   padding: 0;
   display: flex;
@@ -9,17 +11,79 @@ body {
   height: 100vh;
 }
 
-.container {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  width: 400px;
+.container-general{
+  display:flex;
+  flex-direction: row;
 }
 
-h1 {
+.container-left {
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 32px 0 0 32px;
+  box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5), inset 0px -8px 16px 0px rgba(120, 103, 223, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
+  padding: 40px;
+  width: 600px;
+}
+
+.container-right{
+  background: linear-gradient(61deg, rgba(122,106,221,1) 0%, rgba(96,74,239,1) 78%);
+  box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5);
+  border-radius: 0 32px 32px 0;
+  padding: 40px;
+  width: 35em;
+}
+
+.container-form{
+  border-radius: 32px !important;
+}
+
+@keyframes MoveUpDownImg {
+  0%, 100% {
+    bottom: 220px;
+    right: 420px;
+  }
+  50% {
+    bottom: 240px;
+  }
+}
+
+@keyframes MoveUpDownText {
+  0%, 100% {
+    bottom: 470px;
+    right: 620px;
+  }
+  50% {
+    bottom: 490px;
+  }
+}
+
+.container-right img{
+  animation: MoveUpDownImg 4s ease infinite;
+  position: absolute;
+  width: 300px;
+  height: auto;
+}
+
+.container-right p{
+  width: 120px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(11.3px);
+  -webkit-backdrop-filter: blur(11.3px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 600;
+  font-size: 22px;
+  animation: MoveUpDownText 4.3s ease infinite;
+  position: absolute;
+}
+
+h1, h2 {
   text-align: center;
   color: #333;
+  margin: 0;
 }
 
 form {
@@ -38,18 +102,53 @@ form {
   align-items: center;
 }
 
-.input-form {
-  padding: 10px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+.bloc-form{
+  background: rgb(122,106,221);
+  background: linear-gradient(61deg, rgba(122,106,221,1) 0%, rgba(96,74,239,1) 78%);
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-radius:100px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  margin: 20px 0;
 }
+
+.bloc-form p{
+  color: #fff;
+  font-weight: 600;
+}
+
+.bloc-form .button-form {
+  display: inline-block;
+  padding: 18px 60px;
+  border: none;
+  font-weight:600;
+  position: relative;
+  z-index: 2;
+  will-change: transform, filter;
+  transform-style: preserve-3d;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  backdrop-filter: blur(5px);
+  border-radius: 100px;
+  box-shadow: 0px 35px 68px 0px rgba(120, 103, 223, 0.5), inset 0px -8px 16px 0px rgba(120, 103, 223, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
+
+}
+
+.button-form:hover{
+  transform: scale(1.03);
+}
+
 
 .object-form{
   display:flex;
   flex-direction: column;
   align-items: flex-start;
+  margin: 10px 0;
 }
 
 button {
@@ -65,4 +164,37 @@ button {
 
 button:hover {
   background-color: #000;
+}
+
+.icon-form{
+  width: 120px;
+  height: 120px;
+  fill: rgba(96,74,239,1);
+}
+
+.center-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-form {
+  padding: 20px 30px;
+  border: none;
+  border-radius: 12px;
+  background-color: #e7e2ff;
+  width: 40em;
+}
+
+.submit-form{
+  background: linear-gradient(61deg, rgba(122, 106, 221, 1) 0%, rgba(96, 74, 239, 1) 78%);
+  border-radius: 15px;
+  font-weight: 600;
+  backdrop-filter: blur(5px);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  padding: 20px;
+}
+
+.object-forms{
+  margin: 30px 0;
 }

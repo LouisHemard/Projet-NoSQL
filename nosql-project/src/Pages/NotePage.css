@@ -1,0 +1,47 @@
+
+.NoteName{
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 5px;
+    flex: auto;
+    align-items: center;
+}
+.DateName{
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    flex: auto;
+}
+
+.NoteName:hover{
+    color: royalblue;
+}
+
+.UneNote{
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 3;
+    border-radius: 10px ;
+    margin-top: 10px;
+}
+
+.Buttons{
+    display: flex;
+    justify-content: space-evenly;
+    flex: auto;
+    align-items: center;
+}
+
+.BtnNewDec{
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Icon:hover{
+    color: royalblue;
+}
