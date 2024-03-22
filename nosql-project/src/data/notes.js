@@ -57,17 +57,18 @@ export async function createNote(noteData) {
     }
 }
 
-export async function updateNote(id, noteData, userId) {
+export async function updateNote(noteData) {
+    console.log(noteData);
     try {
-        const response = await fetch(`${baseUrl}/notes`, {
+        const response = await fetch(`http://localhost:3003/notes`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id, ...noteData , userId}),
+            body: JSON.stringify({noteData}),
         });
-        if (!response.ok) throw new Error('Erreur lors de la mise à jour de la note');
-        return await response.json();
+       // if (!response.ok) throw new Error('Erreur lors de la mise à jour de la note');
+       // return await response.json();
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la note:', error);
         throw error;
@@ -75,8 +76,7 @@ export async function updateNote(id, noteData, userId) {
 }
 export async function updateNoteTitle(uneNotes, titre, index, userId){
     try {
-        //console.log(uneNotes);
-        const idNote = uneNotes.idNotes
+
         const response = await fetch(`${baseUrl}/titre`, {
             method: 'PATCH',
             headers: {
@@ -84,6 +84,7 @@ export async function updateNoteTitle(uneNotes, titre, index, userId){
             },
             body: JSON.stringify({uneNotes, titre,index, userId}),
         });
+
         if (!response.ok) throw new Error('Erreur lors de la mise à jour du Titre');
         return await response.json();
     } catch (error) {

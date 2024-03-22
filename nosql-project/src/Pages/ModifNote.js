@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import {useParams, useHistory, useNavigate} from "react-router-dom";
-import { fetchNoteDetails, updateNote } from '../data/notes'; // Assurez-vous d'importer correctement vos fonctions d'API
+import { useNavigate, useLocation } from "react-router-dom";
+import{updateNote, fetchNoteDetails} from "../data/notes";
 import './Form.css'
 import './NotePage.css'
 
 const ModifNote = () => {
-    const { idNotes } = useParams();
+    const location = useLocation();
+    const { idNotes, index } = location.state || {};
     const [noteDetails, setNoteDetails] = useState({ titre: '', contenu: '' });
-    const [originalNoteDetails, setOriginalNoteDetails] = useState(null);
-    const navigate = useNavigate()
-    const userId = JSON.parse(sessionStorage.getItem('user')).id; // Assure-toi que l'ID utilisateur est stocké dans le sessionStorage
+    const navigate = useNavigate();
+    const userId = JSON.parse(sessionStorage.getItem('user')).id;
 
-    // Utilisez useEffect pour charger les détails de la note lorsque le composant est monté
     useEffect(() => {
         const fetchNote = async () => {
             try {
                 const details = await fetchNoteDetails(idNotes);
                 setNoteDetails(details);
-                setOriginalNoteDetails(details);
             } catch (error) {
                 console.error('Erreur lors de la récupération des détails de la note:', error);
             }
@@ -25,58 +23,62 @@ const ModifNote = () => {
         fetchNote();
     }, [idNotes]);
 
-    const handleTitleChange = (e) => {
-        setNoteDetails(prevState => ({
-            ...prevState,
-            titre: e.target.value
-        }));
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setNoteDetails({ ...noteDetails, [name]: value });
     };
 
-    const handleContentChange = (e) => {
-        setNoteDetails(prevState => ({
-            ...prevState,
-            contenu: e.target.value
-        }));
-    };
-
-    const handleUpdateNote = async () => {
-        // Vérifie si les données de la note ont été modifiées
-        if (
-            noteDetails.titre === originalNoteDetails.titre &&
-            noteDetails.contenu === originalNoteDetails.contenu
-        ) {
-            // Si aucune modification n'a été apportée, retournez à la page précédente
-            navigate('/NotePage');
-            return;
-        }
-
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const title = event.target['title-notes'].value;
+        const details = event.target['details-notes'].value;
+        const objet = {
+            idNotes: idNotes,
+            titre: title,
+            contenu: details,
+            date: noteDetails.date,
+            idUser: userId,
+            index: index
+        };
+        console.log(objet);
         try {
-            await updateNote(idNotes, { titre: noteDetails.titre, contenu: noteDetails.contenu, date:noteDetails.date }, userId);
-            // Affichez une notification ou redirigez l'utilisateur après la mise à jour réussie
-            console.log('Note mise à jour avec succès !');
-            navigate('/NotePage');
-
-
+            await updateNote(objet);
+            alert('Note ajoutée avec succès');
+            navigate('/NotePage'); // Redirige vers la page de notes après succès
         } catch (error) {
-            console.error('Erreur lors de la mise à jour de la note:', error);
+            console.error('Erreur lors de l\'ajout de la note:', error);
+            alert('Erreur lors de l\'ajout de la note');
         }
+        // Ici, tu peux décommenter et utiliser ton code de mise à jour
     };
 
     return (
         <div className='container-left container-form'>
             <h1>Modifier Note</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className='title'>
                     <h3>Titre</h3>
-                    <input className="input-form" type="text" id="title-notes" name="title-notes"
-                           value={noteDetails.titre} onChange={handleTitleChange} required/>
+                    <input
+                        className="input-form"
+                        type="text"
+                        id="title-notes"
+                        name="titre" // Assure-toi que le nom correspond à la clé dans ton état noteDetails
+                        value={noteDetails.titre}
+                        onChange={handleInputChange} // Gère le changement d'entrée
+                    />
                 </div>
                 <div className='details'>
                     <h3>Contenu</h3>
-                    <textarea className="text-form" id="details-notes" name="details-notes" value={noteDetails.contenu}
-                              onChange={handleContentChange} required/>
+                    <textarea
+                        className="text-form"
+                        id="details-notes"
+                        name="contenu" // Assure-toi que le nom correspond à la clé dans ton état noteDetails
+                        value={noteDetails.contenu}
+                        required
+                        onChange={handleInputChange} // Gère le changement d'entrée
+                    />
                 </div>
-                <button className="submit-form" type="submit" onClick={handleUpdateNote}>Terminé</button>
+                <button className="submit-form" type="submit">Terminé</button>
             </form>
         </div>
     );

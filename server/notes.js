@@ -104,17 +104,23 @@ app.post('/notes', async (req, res) => {
 
 // Endpoint pour modifier une note existante
 app.patch('/notes', async (req, res) => {
-    const {id}  = req.body;
+   console.log('cc')
 
-    const { titre, date, contenu ,userId } = req.body; // Supposons que l'on peut modifier userId ici, bien que cela soit inhabituel
-    //console.log(id,titre, date, contenu ,userId);
+    const { idNotes, titre, contenu,date,idUser, index } = req.body.noteData;
+    console.log(req.body);
+
+    const objetJson = JSON.stringify({ idNotes: idNotes,titre: titre,date: date });
+   console.log(objetJson);
+
     try {
+        await redis.lset(idUser, index, objetJson);
+
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection('notes');
-        const result = await collection.updateOne({ _id: new ObjectId(id), userId }, { $set: { titre, date , contenu} });
+        const result = await collection.updateOne({ _id: new ObjectId(idNotes) }, { $set: {contenu: contenu, titre:titre} });
         if (result.modifiedCount === 0) {
-            res.status(404).json({ message: "Note non trouvé ou utilisateur incorect"  });
+            res.status(404).json({ message: "Note non trouvée ou utilisateur incorrect" });
         } else {
             res.status(200).json({ modifiedCount: result.modifiedCount });
         }
@@ -123,7 +129,9 @@ app.patch('/notes', async (req, res) => {
     } finally {
         await client.close();
     }
+
 });
+
 
 // Endpoint pour supprimer une note spécifique en fonction de l'ID de l'utilisateur passé dans le corps de la requête
 app.delete('/notes/:id', async (req, res) => {

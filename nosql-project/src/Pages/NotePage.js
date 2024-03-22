@@ -35,8 +35,8 @@ const NotePage = () => {
         }
     };
 
-    const handleViewDetails = (idNotes) => {
-        navigate(`/ModifNote/${idNotes}`);
+    const handleViewDetails = (idNotes, index) => {
+        navigate(`/ModifNote`, { state: { idNotes: idNotes, index: index }});
     };
 
     const handleEditTitle = async (uneNote, index) => {

@@ -34,7 +34,7 @@ const router = createBrowserRouter([
     element: <NewNotes/>
   },
   {
-    path:'/ModifNote/:idNotes', // Définissez le paramètre idNotes ici
+    path:'/ModifNote', // Définissez le paramètre idNotes ici
     element: <ModifNote/>
   }
 ]);
