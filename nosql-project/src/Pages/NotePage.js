@@ -13,6 +13,8 @@ import {
 import './Form.css';
 import './NotePage.css'
 import { MdDelete, MdEdit } from "react-icons/md";
+import { BsFillShareFill } from "react-icons/bs";
+import { AiFillEye } from "react-icons/ai";
 
 const NotePage = () => {
     const [notes, setNotes] = useState([]);
@@ -29,9 +31,9 @@ const NotePage = () => {
                 const fetchedSharedNoteIds = await getNoteShare(userId);
                 //console.log(fetchedSharedNoteIds, 'idparage');
                 const arrayFetchedSharedNotesID = fetchedSharedNoteIds.sharedNoteIds
-                console.log(arrayFetchedSharedNotesID, "arrayFetchedSharedNotesID")
+                //console.log(arrayFetchedSharedNotesID, "arrayFetchedSharedNotesID")
                 const fetchedSharedNotes = await getDetailSharedNotes(arrayFetchedSharedNotesID);
-                console.log(fetchedSharedNotes, 'derneir');
+                //console.log(fetchedSharedNotes, 'derneir');
                 setSharedNotes(fetchedSharedNotes);
 
             } catch (error) {
@@ -58,7 +60,7 @@ const NotePage = () => {
         navigate(`/ModifNote`, { state: { idNotes: idNotes, index: index }});
     };
     const handleViewDetailsShared = (sharedNote) => {
-        console.log("et oh toi ", sharedNote)
+        //console.log("et oh toi ", sharedNote)
         navigate(`/ViewNote`, { state: { idNotes: sharedNote, titre: sharedNote.titre, contenu:sharedNote.contenu}});
     };
 
@@ -85,7 +87,7 @@ const NotePage = () => {
                     const idPartage = reponse.id;
                     await shareNote(userId, idPartage, uneNote);
                 } else {
-                    console.log('Utilisateur non trouvé');
+                    //('Utilisateur non trouvé');
                 }
             } catch (error) {
                 console.error('Erreur lors du partage de note : ', error);
@@ -105,7 +107,7 @@ const NotePage = () => {
                         <div className='Buttons'>
                             <MdEdit  size={20} className='Icon' onClick={() => handleViewDetails(note.idNotes, index)}/>
                             <MdDelete size={20} className='Icon' onClick={() => handleDeleteNote(note.idNotes, index)}/>
-                            <MdDelete size={20} className='Icon' onClick={() => handleShareNote(note.idNotes)}/>
+                            <BsFillShareFill size={20} className='Icon' onClick={() => handleShareNote(note.idNotes)}/>
                         </div>
                     </div>
                 </div>
@@ -114,13 +116,13 @@ const NotePage = () => {
                 <div>
                     <h2>Notes Partagées</h2>
                     {sharedNotes.map((sharedNote, index) => (
-                        console.log(sharedNote._id, "contenu note"),
+                       // console.log(sharedNote._id, "contenu note"),
                         <div key={sharedNote._id}>
                             <div className='UneNote'>
                                 <div className='NoteName'>{sharedNote.titre}</div>
                                 <div className='DateName'>{sharedNote.date}</div>
                                 <div className='Buttons'>
-                                    <MdEdit  size={20} className='Icon' onClick={() => handleViewDetailsShared(sharedNote)}/>
+                                    <AiFillEye  size={20} className='Icon' onClick={() => handleViewDetailsShared(sharedNote)}/>
                                  </div>
                             </div>
                         </div>

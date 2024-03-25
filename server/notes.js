@@ -37,7 +37,7 @@ app.get('/notes/:userId', async (req, res) => {
             try {
                 return JSON.parse(note); // Tente de parser la note
             } catch (err) {
-                console.log('Erreur lors de la conversion JSON:', note);
+               // console.log('Erreur lors de la conversion JSON:', note);
                 return null; // Retourne null si la conversion échoue
             }
         }).filter(note => note !== null); // Filtre les éléments non valides (null)
@@ -50,7 +50,7 @@ app.get('/notes/:userId', async (req, res) => {
 });
 
 app.post('/share-note', async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     try {
         const { user1, user2, noteId } = req.body;
 
@@ -75,10 +75,10 @@ app.post('/share-note', async (req, res) => {
             { userId1, userId2, noteId }
         );
 
-        console.log('Utilisateurs créés et note partagée avec succès');
+        //console.log('Utilisateurs créés et note partagée avec succès');
         res.status(200).json({ message: 'Utilisateurs créés et note partagée avec succès' });
     } catch (error) {
-        console.error('Erreur lors de la création des utilisateurs et du partage de la note:', error);
+        //console.error('Erreur lors de la création des utilisateurs et du partage de la note:', error);
         res.status(500).json({ message: 'Erreur lors de la création des utilisateurs et du partage de la note' });
     }
 });
@@ -108,7 +108,7 @@ app.get('/shared-note/:userId', async (req, res) => {
 
 // Endpoint pour afficher les détails d'une note spécifique
 app.get('/detailsNotes/:idNotes', async (req, res) => {
-    console.log(req.params)
+    //console.log(req.params)
     const id = req.params.idNotes;
 
     try {
@@ -141,7 +141,7 @@ app.post('/arrayDetailsNotes/', async (req, res) => {
        const arrayObjectId = arrayId.map(id => new ObjectId(id))
         const cursor = await collection.find( { _id : { $in : arrayObjectId } } ); // Utiliser new ObjectId(id) pour créer un nouvel ObjectId
        const documents = await cursor.toArray();
-       console.log(documents, 'note recupéré');
+      //console.log(documents, 'note recupéré');
        if (documents) {
 
             res.status(200).json(documents);
@@ -192,13 +192,13 @@ app.post('/notes', async (req, res) => {
 
 // Endpoint pour modifier une note existante
 app.patch('/notes', async (req, res) => {
-   console.log('cc')
+   //console.log('cc')
 
     const { idNotes, titre, contenu,date,idUser, index } = req.body.noteData;
-    console.log(req.body);
+   // console.log(req.body);
 
     const objetJson = JSON.stringify({ idNotes: idNotes,titre: titre,date: date });
-   console.log(objetJson);
+   //console.log(objetJson);
 
     try {
         await redis.lset(idUser, index, objetJson);
@@ -261,7 +261,7 @@ app.patch('/titre', async (req, res) => {
         titre : titre,
         date: uneNotes.data
     }
-    console.log(uneNotes, titre, index, userId);
+    //console.log(uneNotes, titre, index, userId);
 
     const objetJson = JSON.stringify(newTitle);
     try {

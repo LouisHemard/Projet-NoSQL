@@ -23,7 +23,7 @@ export async function fetchNotes(userId) {
 
 //details des notes partagé
 export async function getDetailSharedNotes(arrayId){
-    console.log(arrayId, 'salut')
+    //console.log(arrayId, 'salut')
     try {
         const response = await fetch(`${baseUrl}/arrayDetailsNotes/`, {
             method: 'POST',
@@ -35,7 +35,7 @@ export async function getDetailSharedNotes(arrayId){
 
         const data = await response.json();
 
-        console.log(data, "coucou array Notes");
+       // console.log(data, "coucou array Notes");
         if (!response.ok) throw new Error('Erreur lors de la récupération des détails de la note');
         //return await response.json();
         return data;
@@ -124,7 +124,7 @@ export async function mailCorrect(mail) {
 }
 
 export async function shareNote(user1,user2,idNote) {
-    console.log(user1,user2,idNote);
+    //console.log(user1,user2,idNote);
     try {
         // Préparer la requête à envoyer à l'API
         const response = await fetch(`http://localhost:3003/share-note`, {
