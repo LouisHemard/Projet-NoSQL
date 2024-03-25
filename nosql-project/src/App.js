@@ -6,6 +6,7 @@ import Inscription from './Pages/InscriptionForm'
 import NotePage from "./Pages/NotePage";
 import NewNotes from "./Pages/NewNotes";
 import ModifNote from "./Pages/ModifNote";
+import ViewNote from './Pages/ViewNote';
 
 
 import './Pages/Form.css'
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path:'/NewNotes',
     element: <NewNotes/>
+  },
+  {
+    path:'/ViewNote',
+    element: <ViewNote/>
   },
   {
     path:'/ModifNote', // Définissez le paramètre idNotes ici

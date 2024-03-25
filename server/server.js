@@ -77,6 +77,28 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.post('/mail', async (req, res) => {
+    try {
+        const {mail} = req.body;
+        console.log(mail)
+        const conn = await pool.getConnection();
+
+        const result = await conn.query('SELECT * FROM utilisateur WHERE mail = ?', [mail]);
+        console.log(result[0].id);
+        conn.release();
+
+        if (result.length > 0) {
+            res.status(200).send({ exists: true, message: 'Un utilisateur existe déjà avec cet email.' , id:result[0].id});
+        } else {
+            res.status(200).send({ exists: false, message: 'Aucun utilisateur trouvé avec cet email.' });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification de l\'utilisateur:', error.message);
+        res.status(500).send({ message: 'Erreur lors de la vérification de l\'utilisateur', error: error.message });
+    }
+});
+
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });

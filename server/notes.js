@@ -3,6 +3,11 @@ const cors = require('cors');
 const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const Redis = require("ioredis");
+const neo4j = require('neo4j-driver');
+
+
+const driver = neo4j.driver('neo4j://localhost:7687', neo4j.auth.basic('neo4j', 'adminsql'));
+const session = driver.session();
 
 const app = express();
 const port = 3003;
@@ -44,17 +49,75 @@ app.get('/notes/:userId', async (req, res) => {
     }
 });
 
+app.post('/share-note', async (req, res) => {
+    console.log(req.body);
+    try {
+        const { user1, user2, noteId } = req.body;
+
+        // Vérifier si les données nécessaires sont présentes dans le corps de la requête
+        if (!user1 || !user2 || !noteId) {
+            return res.status(400).json({ message: 'Les informations des utilisateurs et l\'ID de la note sont requis.' });
+        }
+
+        // Convertir les ID des utilisateurs en entiers
+        const userId1 = parseInt(user1.id);
+        const userId2 = parseInt(user2.id);
+
+        // Exécution de la requête Cypher pour créer les utilisateurs et établir la relation
+        const result = await session.run(
+            'CREATE (u1:User {id: $userId1})\n' +
+            'CREATE (u2:User {id: $userId2})\n' +
+            'CREATE (n:Note {id: $noteId})\n' +
+            'CREATE (u1)-[:SHARES]->(n)\n' +
+            'CREATE (u2)-[:SHARES]->(n)\n' +
+            'CREATE (n)-[:SHARED_WITH]->(u1)\n' +
+            'CREATE (n)-[:SHARED_WITH]->(u2)',
+            { userId1, userId2, noteId }
+        );
+
+        console.log('Utilisateurs créés et note partagée avec succès');
+        res.status(200).json({ message: 'Utilisateurs créés et note partagée avec succès' });
+    } catch (error) {
+        console.error('Erreur lors de la création des utilisateurs et du partage de la note:', error);
+        res.status(500).json({ message: 'Erreur lors de la création des utilisateurs et du partage de la note' });
+    }
+});
+
+
+app.get('/shared-note/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Exécutez une requête Cypher pour trouver l'ID de la note partagée avec l'utilisateur donné
+        const result = await session.run(
+            `MATCH (u:User {id: ${userId}})-[:SHARES]->(n:Note) RETURN n.id AS sharedNoteId`,
+            { userId }
+        );
+
+        // Récupérer les ID des notes partagées à partir du résultat de la requête
+        const sharedNoteIds = result.records.map(record => record.get('sharedNoteId'));
+
+        res.status(200).json({ sharedNoteIds });
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'ID de la note partagée:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération de l\'ID de la note partagée' });
+    }
+});
+
 
 
 // Endpoint pour afficher les détails d'une note spécifique
 app.get('/detailsNotes/:idNotes', async (req, res) => {
+    console.log(req.params)
     const id = req.params.idNotes;
+
     try {
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection('notes');
         const note = await collection.findOne({ _id: new ObjectId(id) }); // Utiliser new ObjectId(id) pour créer un nouvel ObjectId
         if (note) {
+            //console.log(note);
             res.status(200).json(note);
         } else {
             res.status(404).json({ message: "Note not found" });
@@ -66,6 +129,31 @@ app.get('/detailsNotes/:idNotes', async (req, res) => {
     }
 });
 
+//end Point Tableau Notes Shared
+app.post('/arrayDetailsNotes/', async (req, res) => {
+    const arrayId = req.body;
+    //console.log(req.body ,'coucou sharedd');
+   try {
+        await client.connect();
+        const db = client.db(dbName);
+        const collection = db.collection('notes');
+       //console.log(arrayId, 'array id ');
+       const arrayObjectId = arrayId.map(id => new ObjectId(id))
+        const cursor = await collection.find( { _id : { $in : arrayObjectId } } ); // Utiliser new ObjectId(id) pour créer un nouvel ObjectId
+       const documents = await cursor.toArray();
+       console.log(documents, 'note recupéré');
+       if (documents) {
+
+            res.status(200).json(documents);
+        } else {
+            res.status(404).json({ message: "Note not found" });
+        }
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    } finally {
+        await client.close();
+    }
+});
 // Endpoint pour créer une nouvelle note
 app.post('/notes', async (req, res) => {
 
